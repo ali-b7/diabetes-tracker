@@ -12,3 +12,8 @@ def test_dashboard_requires_login():
     r = client.get("/")
     assert r.status_code in (302, 401)
 
+def test_login_page_exists():
+    app = create_app()
+    client = app.test_client()
+    r = client.get("/login")
+    assert r.status_code == 200
