@@ -28,4 +28,5 @@ jobs:
       - name: Tests
         env:
           SECRET_KEY: test
+          PYTHONPATH: .
         run: pytest -q
