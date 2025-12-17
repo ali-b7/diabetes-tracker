@@ -20,7 +20,7 @@ def load_user(user_id):
 
 class GlucoseLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
 
     value = db.Column(db.Float, nullable=False)
     unit = db.Column(db.String(10), nullable=False, default="mg/dL")  # mg/dL or mmol/L
@@ -29,7 +29,7 @@ class GlucoseLog(db.Model):
 
 class InsulinLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)
 
     insulin_type = db.Column(db.String(50), nullable=False)  # e.g., Rapid, Basal, NovoRapid, etc.
     units = db.Column(db.Float, nullable=False)

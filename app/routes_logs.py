@@ -1,37 +1,34 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required, current_user
 from . import db
 from .models import GlucoseLog, InsulinLog
 
 logs_bp = Blueprint("logs", __name__)
 
+
 @logs_bp.get("/")
-@login_required
 def dashboard():
     glucose = (
         GlucoseLog.query
-        .filter_by(user_id=current_user.id)
         .order_by(GlucoseLog.recorded_at.desc())
         .limit(10)
         .all()
     )
     insulin = (
         InsulinLog.query
-        .filter_by(user_id=current_user.id)
         .order_by(InsulinLog.recorded_at.desc())
         .limit(10)
         .all()
     )
     return render_template("dashboard.html", glucose=glucose, insulin=insulin)
 
+
 @logs_bp.get("/log/glucose")
-@login_required
 def glucose_form():
     return render_template("glucose_form.html")
 
+
 @logs_bp.post("/log/glucose")
-@login_required
 def glucose_post():
     try:
         value = float(request.form.get("value", ""))
@@ -39,10 +36,13 @@ def glucose_post():
         recorded_at_str = request.form.get("recorded_at", "")
         notes = request.form.get("notes", "").strip()
 
-        recorded_at = datetime.fromisoformat(recorded_at_str) if recorded_at_str else datetime.utcnow()
+        recorded_at = (
+            datetime.fromisoformat(recorded_at_str)
+            if recorded_at_str
+            else datetime.utcnow()
+        )
 
         entry = GlucoseLog(
-            user_id=current_user.id,
             value=value,
             unit=unit,
             recorded_at=recorded_at,
@@ -50,19 +50,20 @@ def glucose_post():
         )
         db.session.add(entry)
         db.session.commit()
+
         flash("Glucose entry saved.")
         return redirect(url_for("logs.dashboard"))
     except ValueError:
         flash("Please enter a valid glucose value.")
         return redirect(url_for("logs.glucose_form"))
 
+
 @logs_bp.get("/log/insulin")
-@login_required
 def insulin_form():
     return render_template("insulin_form.html")
 
+
 @logs_bp.post("/log/insulin")
-@login_required
 def insulin_post():
     try:
         insulin_type = request.form.get("insulin_type", "").strip()
@@ -74,10 +75,13 @@ def insulin_post():
             flash("Insulin type is required.")
             return redirect(url_for("logs.insulin_form"))
 
-        recorded_at = datetime.fromisoformat(recorded_at_str) if recorded_at_str else datetime.utcnow()
+        recorded_at = (
+            datetime.fromisoformat(recorded_at_str)
+            if recorded_at_str
+            else datetime.utcnow()
+        )
 
         entry = InsulinLog(
-            user_id=current_user.id,
             insulin_type=insulin_type,
             units=units,
             recorded_at=recorded_at,
@@ -85,24 +89,23 @@ def insulin_post():
         )
         db.session.add(entry)
         db.session.commit()
+
         flash("Insulin entry saved.")
         return redirect(url_for("logs.dashboard"))
     except ValueError:
         flash("Please enter valid insulin units.")
         return redirect(url_for("logs.insulin_form"))
 
+
 @logs_bp.get("/history")
-@login_required
 def history():
     glucose = (
         GlucoseLog.query
-        .filter_by(user_id=current_user.id)
         .order_by(GlucoseLog.recorded_at.desc())
         .all()
     )
     insulin = (
         InsulinLog.query
-        .filter_by(user_id=current_user.id)
         .order_by(InsulinLog.recorded_at.desc())
         .all()
     )

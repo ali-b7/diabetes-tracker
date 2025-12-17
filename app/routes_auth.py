@@ -1,13 +1,15 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user
 from .models import User
 from . import db
 
 auth_bp = Blueprint("auth", __name__)
 
+
 @auth_bp.get("/register")
 def register():
     return render_template("register.html")
+
 
 @auth_bp.post("/register")
 def register_post():
@@ -27,12 +29,14 @@ def register_post():
     db.session.add(user)
     db.session.commit()
 
-    flash("Account created. Please log in.")
-    return redirect(url_for("auth.login"))
+    flash("Account created. You can log in, but the demo works without login too.")
+    return redirect(url_for("logs.dashboard"))
+
 
 @auth_bp.get("/login")
 def login():
     return render_template("login.html")
+
 
 @auth_bp.post("/login")
 def login_post():
@@ -41,14 +45,15 @@ def login_post():
 
     user = User.query.filter_by(email=email).first()
     if not user or not user.check_password(password):
-        flash("Invalid credentials.")
+        flash("Invalid credentials (demo works without login too).")
         return redirect(url_for("auth.login"))
 
     login_user(user)
     return redirect(url_for("logs.dashboard"))
 
+
 @auth_bp.get("/logout")
-@login_required
 def logout():
+    # In demo mode, logout should never block navigation
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("logs.dashboard"))

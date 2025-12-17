@@ -1,22 +1,78 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Dashboard</h2>
 
-<h3>Recent Glucose</h3>
-<ul>
-  {% for g in glucose %}
-    <li>{{ g.recorded_at }} — {{ g.value }} {{ g.unit }} ({{ g.notes or "no notes" }})</li>
-  {% else %}
-    <li>No glucose entries yet.</li>
-  {% endfor %}
-</ul>
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <div>
+    <h2 class="mb-0">Dashboard</h2>
+    <div class="text-secondary">Recent glucose and insulin entries</div>
+  </div>
 
-<h3>Recent Insulin</h3>
-<ul>
-  {% for i in insulin %}
-    <li>{{ i.recorded_at }} — {{ i.insulin_type }}: {{ i.units }} units ({{ i.notes or "no notes" }})</li>
-  {% else %}
-    <li>No insulin entries yet.</li>
-  {% endfor %}
-</ul>
+  <div class="d-flex gap-2">
+    <a class="btn btn-primary" href="/log/glucose">+ Glucose</a>
+    <a class="btn btn-outline-primary" href="/log/insulin">+ Insulin</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="card p-3">
+      <h5 class="mb-3">Recent Glucose</h5>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th class="text-end">Value</th>
+              <th>Unit</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for g in glucose %}
+            <tr>
+              <td>{{ g.recorded_at.strftime("%Y-%m-%d %H:%M") }}</td>
+              <td class="text-end fw-semibold">{{ g.value }}</td>
+              <td>{{ g.unit }}</td>
+              <td class="text-secondary">{{ g.notes or "" }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-secondary">No glucose entries yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card p-3">
+      <h5 class="mb-3">Recent Insulin</h5>
+      <div class="table-responsive">
+        <table class="table table-sm align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th class="text-end">Units</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in insulin %}
+            <tr>
+              <td>{{ i.recorded_at.strftime("%Y-%m-%d %H:%M") }}</td>
+              <td class="fw-semibold">{{ i.insulin_type }}</td>
+              <td class="text-end fw-semibold">{{ i.units }}</td>
+              <td class="text-secondary">{{ i.notes or "" }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" class="text-secondary">No insulin entries yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

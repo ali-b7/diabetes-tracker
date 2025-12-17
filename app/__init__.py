@@ -5,7 +5,6 @@ import os
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-login_manager.login_view = "auth.login"
 
 def create_app():
     app = Flask(__name__)
@@ -15,6 +14,9 @@ def create_app():
 
     db.init_app(app)
     login_manager.init_app(app)
+
+    # Demo-friendly: do not force redirects to login page
+    login_manager.login_view = None
 
     from .routes_auth import auth_bp
     from .routes_logs import logs_bp
