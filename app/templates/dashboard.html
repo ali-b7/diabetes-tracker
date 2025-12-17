@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+
+<h3>Recent Glucose</h3>
+<ul>
+  {% for g in glucose %}
+    <li>{{ g.recorded_at }} — {{ g.value }} {{ g.unit }} ({{ g.notes or "no notes" }})</li>
+  {% else %}
+    <li>No glucose entries yet.</li>
+  {% endfor %}
+</ul>
+
+<h3>Recent Insulin</h3>
+<ul>
+  {% for i in insulin %}
+    <li>{{ i.recorded_at }} — {{ i.insulin_type }}: {{ i.units }} units ({{ i.notes or "no notes" }})</li>
+  {% else %}
+    <li>No insulin entries yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>History</h2>
+
+<h3>Glucose</h3>
+<ul>
+  {% for g in glucose %}
+    <li>{{ g.recorded_at }} — {{ g.value }} {{ g.unit }} — {{ g.notes or "" }}</li>
+  {% else %}<li>No glucose entries.</li>{% endfor %}
+</ul>
+
+<h3>Insulin</h3>
+<ul>
+  {% for i in insulin %}
+    <li>{{ i.recorded_at }} — {{ i.insulin_type }} — {{ i.units }} units — {{ i.notes or "" }}</li>
+  {% else %}<li>No insulin entries.</li>{% endfor %}
+</ul>
+{% endblock %}

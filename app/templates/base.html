@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Diabetes Tracker</title>
+</head>
+<body>
+  <nav>
+    <a href="/">Dashboard</a> |
+    <a href="/log/glucose">Add Glucose</a> |
+    <a href="/log/insulin">Add Insulin</a> |
+    <a href="/history">History</a> |
+    <a href="/logout">Logout</a>
+  </nav>
+  <hr />
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul>
+        {% for msg in messages %}<li>{{ msg }}</li>{% endfor %}
+      </ul>
+      <hr />
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</body>
+</html>

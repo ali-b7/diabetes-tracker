@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Add Glucose</h2>
+<form method="post" action="/log/glucose">
+  <label>Value</label><br />
+  <input name="value" type="number" step="0.1" required><br /><br />
+
+  <label>Unit</label><br />
+  <select name="unit">
+    <option>mg/dL</option>
+    <option>mmol/L</option>
+  </select><br /><br />
+
+  <label>Date/Time (optional)</label><br />
+  <input name="recorded_at" type="datetime-local"><br /><br />
+
+  <label>Notes</label><br />
+  <input name="notes" type="text"><br /><br />
+
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
