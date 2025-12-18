@@ -33,7 +33,7 @@ If any step fails, the build is blocked.
 
 I implemented a continuous integration pipeline using GitHub Actions.
 Every push or pull request automatically installs dependencies, runs static code analysis with Ruff, and executes unit tests with Pytest.
-If any step fails, the build is blocked, ensuring code quality and reliability
+If any step fails, the build is blocked, ensuring code quality and reliability. 
 
 ## Run locally (Windows)
 ```powershell
