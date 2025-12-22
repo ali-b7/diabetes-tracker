@@ -1,5 +1,5 @@
 import pytest
-from app import create_app, db
+from app import create_app
 from app.models import GlucoseLog, InsulinLog
 
 @pytest.fixture()
