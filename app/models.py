@@ -1,7 +1,6 @@
-from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from . import db, login_manager
+from werkzeug.security import generate_password_hash, check_password_hash
+from app import db, login_manager
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +13,6 @@ class User(UserMixin, db.Model):
     def check_password(self, password: str) -> bool:
         return check_password_hash(self.password_hash, password)
 
-from app import db
 
 @login_manager.user_loader
 def load_user(user_id):
