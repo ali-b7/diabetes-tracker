@@ -18,8 +18,7 @@ def test_history_opens_without_login():
     r = client.get("/history")
     assert r.status_code == 200
 
-def test_app_health_check():
-    """
-    Simple sanity test to confirm the test suite is running.
-    """
-    assert True
+def test_homepage_responds(client):
+    response = client.get("/")
+    assert response.status_code == 200
+
